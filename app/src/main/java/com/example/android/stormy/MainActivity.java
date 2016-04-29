@@ -1,7 +1,5 @@
 package com.example.android.stormy;
 
-import android.app.AlertDialog;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -9,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -21,6 +22,8 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
+
+    private CurrentWeather mCurrentWeather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +59,19 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call call, Response response) throws IOException {
                     //Log the response
                     try {
-                        Log.v(TAG, response.body().string());
+                        String jsonData = response.body().string();
+                        Log.v(TAG,jsonData );
                         if (response.isSuccessful()) {
+                            mCurrentWeather = getCurrentDetails(jsonData);
 
                         } else {
                             alertUserAboutError();
                         }
-                    } catch (IOException e) {
+                    }
+                    catch (IOException e) {
+                        Log.e(TAG, "Exception caught:", e);
+                    }
+                    catch (JSONException e){
                         Log.e(TAG, "Exception caught:", e);
                     }
                 }
@@ -72,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.network_unavailable_message, Toast.LENGTH_LONG).show();
         }
         Log.d(TAG, "Main UI code is running!");
+    }
+
+    //Throws exception when method is called. This removes the need for try catch.
+    private CurrentWeather getCurrentDetails(String jsonData) throws JSONException {
+        JSONObject forecast = new JSONObject(jsonData);
+        String timezone = forecast.getString("timezone");
+        Log.i(TAG, "From JSON:" + timezone);
+        return new CurrentWeather();
     }
 
     private boolean isNetworkAvailable() {
