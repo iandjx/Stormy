@@ -1,5 +1,6 @@
 package com.example.android.stormy;
 
+import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void alertUserAboutError() {
+        AlertDialogFragment dialog = new AlertDialogFragment();
+        dialog.show(getFragmentManager(), "error_dialog");
 
     }
 }
