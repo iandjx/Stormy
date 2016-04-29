@@ -2,6 +2,9 @@ package com.example.android.stormy;
 
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,41 +33,56 @@ public class MainActivity extends AppCompatActivity {
         String forecastUrl = "https://api.forecast.io/forecast/" + apiKey + "/" + latitude +
                 "," + longtitude;
 
-        //Create a new client
-        OkHttpClient client = new OkHttpClient();
+        if(isNetworkAvailable()) {
+            //Create a new client
+            OkHttpClient client = new OkHttpClient();
 
-        //Create a request
-        Request request = new Request.Builder()
-                .url(forecastUrl)
-                .build();
+            //Create a request
+            Request request = new Request.Builder()
+                    .url(forecastUrl)
+                    .build();
 
-        //Call the request
-        Call call = client.newCall(request);
-        //enque queues the call
-        //Callback is communication bridge of the background and main thread
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
+            //Call the request
+            Call call = client.newCall(request);
+            //enque queues the call
+            //Callback is communication bridge of the background and main thread
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
 
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //Log the response
-                try {
-                    Log.v(TAG, response.body().string());
-                    if (response.isSuccessful()){
-
-                    }
-                    else{
-                        alertUserAboutError();
-                    }
-                } catch (IOException e) {
-                    Log.e(TAG, "Exception caught:", e);
                 }
-            }
-        });
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    //Log the response
+                    try {
+                        Log.v(TAG, response.body().string());
+                        if (response.isSuccessful()) {
+
+                        } else {
+                            alertUserAboutError();
+                        }
+                    } catch (IOException e) {
+                        Log.e(TAG, "Exception caught:", e);
+                    }
+                }
+            });
+        }
+        else{
+            Toast.makeText(this, R.string.network_unavailable_message, Toast.LENGTH_LONG).show();
+        }
         Log.d(TAG, "Main UI code is running!");
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkinfo = manager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if(networkinfo != null && networkinfo.isConnected()){
+            isAvailable = true;
+        }
+        return isAvailable;
     }
 
     private void alertUserAboutError() {
