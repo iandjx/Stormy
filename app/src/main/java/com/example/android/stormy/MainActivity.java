@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         String apiKey = "a79dc965f755b2fe63f92174cdf1a7ea";
-        double latitude = 37.8267;
-        double longtitude = -122.423;
+        double latitude = 34.5803;
+        double longtitude = 133.0574;
         String forecastUrl = "https://api.forecast.io/forecast/" + apiKey + "/" + latitude +
                 "," + longtitude;
 
@@ -76,6 +76,15 @@ public class MainActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             mCurrentWeather = getCurrentDetails(jsonData);
 
+                            //Tells main thread that we have new data
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateDisplay();
+                                }
+                            });
+
+
                         } else {
                             alertUserAboutError();
                         }
@@ -93,6 +102,15 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.network_unavailable_message, Toast.LENGTH_LONG).show();
         }
         Log.d(TAG, "Main UI code is running!");
+    }
+
+    private void updateDisplay() {
+        mTemperatureLabel.setText(mCurrentWeather.getTemperature() + "");
+        mTimeLabel.setText("At" + mCurrentWeather.getFormattedTime() + "it will be");
+        mHumidityValue.setText(mCurrentWeather.getHumidity() + "");
+        mPrecipValue.setText(mCurrentWeather.getPrecipChance() + "%");
+        mSummaryLabel.setText(mCurrentWeather.getSummary());
+
     }
 
     //Throws exception when method is called. This removes the need for try catch.
