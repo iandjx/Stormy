@@ -1,10 +1,12 @@
-package com.example.android.stormy;
+package com.example.android.stormy.weather;
+
+import com.example.android.stormy.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class CurrentWeather {
+public class Current {
     private String mIcon;
     private long mTime;
     private double mTemperature;
