@@ -16,10 +16,10 @@
         android:layout_height="match_parent"
         android:id="@android:id/list" android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@android:id/empty" android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" android:text="@string/no_daily_forecast_data"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF" android:textIsSelectable="false"/>
 </RelativeLayout>
