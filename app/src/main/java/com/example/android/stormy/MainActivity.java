@@ -38,6 +38,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String DAILY_FORECAST = "DAILY_FORECAST";
 
     private Forecast mForecast;
     @BindView(R.id.timeLabel) TextView mTimeLabel;
@@ -268,6 +269,7 @@ public class MainActivity extends AppCompatActivity {
     @OnClick (R.id.dailyButton)
     public void startDailyActivity(View view){
         Intent intent = new Intent(this, DailyForecastActivity.class);
+        intent.putExtra(DAILY_FORECAST, mForecast.getDailyForecast());
         startActivity(intent);
 
     }
