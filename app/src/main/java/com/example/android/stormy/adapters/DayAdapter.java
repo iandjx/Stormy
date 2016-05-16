@@ -1,7 +1,6 @@
 package com.example.android.stormy.adapters;
 
 import android.content.Context;
-import android.provider.Telephony;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ public class DayAdapter extends BaseAdapter {
 
     public DayAdapter(Context context, Day[] days){
         mContext = context;
-        days = mDays;
+        mDays = days;
     }
 
     @Override
@@ -58,8 +57,12 @@ public class DayAdapter extends BaseAdapter {
         Day day = mDays[position];
         holder.iconImageVIew.setImageResource(day.getIconId());
         holder.temperatureLabel.setText(day.getTemperatureMax()+ "");
-        holder.dayLabel.setText(day.getDayOfTheWeek());
-
+        if(position==0){
+            holder.dayLabel.setText("Today");
+        }
+        else {
+            holder.dayLabel.setText(day.getDayOfTheWeek());
+        }
 
         return convertView;
     }

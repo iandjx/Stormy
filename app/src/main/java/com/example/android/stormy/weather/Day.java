@@ -99,4 +99,5 @@ public class Day implements Parcelable{
             return new Day[size];
         }
     };
+
 }
