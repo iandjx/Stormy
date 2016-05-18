@@ -7,7 +7,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class Day implements Parcelable{
+/**
+ * Created by benjakuben on 2/5/15.
+ */
+public class Day implements Parcelable {
     private long mTime;
     private String mSummary;
     private double mTemperatureMax;
@@ -31,7 +34,7 @@ public class Day implements Parcelable{
     }
 
     public int getTemperatureMax() {
-        return (int) Math.round(mTemperatureMax);
+        return (int)Math.round(mTemperatureMax);
     }
 
     public void setTemperatureMax(double temperatureMax) {
@@ -58,10 +61,10 @@ public class Day implements Parcelable{
         return Forecast.getIconId(mIcon);
     }
 
-    public String getDayOfTheWeek(){
+    public String getDayOfTheWeek() {
         SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
         formatter.setTimeZone(TimeZone.getTimeZone(mTimezone));
-        Date dateTime = new Date(mTime *1000);
+        Date dateTime = new Date(mTime * 1000);
         return formatter.format(dateTime);
     }
 
@@ -79,7 +82,7 @@ public class Day implements Parcelable{
         dest.writeString(mTimezone);
     }
 
-    private Day(Parcel in){
+    private Day(Parcel in) {
         mTime = in.readLong();
         mSummary = in.readString();
         mTemperatureMax = in.readDouble();
@@ -87,7 +90,8 @@ public class Day implements Parcelable{
         mTimezone = in.readString();
     }
 
-    public Day() {}
+    public Day() { }
+
     public static final Creator<Day> CREATOR = new Creator<Day>() {
         @Override
         public Day createFromParcel(Parcel source) {
@@ -99,5 +103,6 @@ public class Day implements Parcelable{
             return new Day[size];
         }
     };
-
 }
+
+
