@@ -1,5 +1,6 @@
 package com.example.android.stormy;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -16,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class HourlyForecastActivity extends ActionBarActivity {
+public class HourlyForecastActivity extends Activity {
 
     private Hour[] mHours;
 
@@ -32,7 +33,7 @@ public class HourlyForecastActivity extends ActionBarActivity {
         Parcelable[] parcelables = intent.getParcelableArrayExtra(MainActivity.HOURLY_FORECAST);
         mHours = Arrays.copyOf(parcelables, parcelables.length, Hour[].class);
 
-        HourAdapter adapter = new HourAdapter(mHours);
+        HourAdapter adapter = new HourAdapter(this, mHours);
         mRecyclerView.setAdapter(adapter);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
